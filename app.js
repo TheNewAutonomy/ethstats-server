@@ -281,7 +281,6 @@ api.on('connection', function (spark)
 							action: 'stats',
 							data: stats
 						});
-						console.log('TNA RESULTS: ');
 						console.log(stats);
 						console.success('API', 'STA', 'Stats from:', data.id);
 					}

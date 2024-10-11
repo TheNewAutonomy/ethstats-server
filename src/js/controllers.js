@@ -146,10 +146,6 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 				_.forEach($scope.nodes, function (node, index) {
 
-					// Init hashrate
-					if( _.isUndefined(node.stats.hashrate) )
-						node.stats.hashrate = 0;
-
 					// Init latency
 					latencyFilter(node);
 
@@ -191,9 +187,6 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				{
 					if( !_.isUndefined($scope.nodes[index].stats.latency) )
 						data.stats.latency = $scope.nodes[index].stats.latency;
-
-					if( _.isUndefined(data.stats.hashrate) )
-						data.stats.hashrate = 0;
 
 					if( $scope.nodes[index].stats.block.number < data.stats.block.number )
 					{
@@ -275,8 +268,6 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 					if( !_.isUndefined(node) && !_.isUndefined(node.stats) )
 					{
 						$scope.nodes[index].stats.active = data.stats.active;
-						$scope.nodes[index].stats.mining = data.stats.mining;
-						$scope.nodes[index].stats.hashrate = data.stats.hashrate;
 						$scope.nodes[index].stats.peers = data.stats.peers;
 						$scope.nodes[index].stats.gasPrice = data.stats.gasPrice;
 						$scope.nodes[index].stats.uptime = data.stats.uptime;
@@ -449,11 +440,6 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 		if( index < 0 )
 		{
-			if( !_.isUndefined(data.stats) && _.isUndefined(data.stats.hashrate) )
-			{
-				data.stats.hashrate = 0;
-			}
-
 			data.pinned = false;
 
 			$scope.nodes.push(data);
