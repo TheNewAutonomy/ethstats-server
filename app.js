@@ -277,9 +277,6 @@ api.on('connection', function (spark)
 				{
 					if(stats !== null)
 					{
-						// Update active status
-    					stats.active = true; // Set to true since we're receiving valid stats
-
 						client.write({
 							action: 'stats',
 							data: stats
