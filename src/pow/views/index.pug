@@ -38,15 +38,6 @@ block content
             span.small-title avg block time
             span.big-details {{ avgBlockTime | avgTimeFilter }}
           div.clearfix
-      div.col-xs-2.stat-holder
-        div.big-info.difficulty.text-danger
-          div.pull-left.icon-full-width
-            i.icon-difficulty
-          div.big-details-holder
-            span.small-title difficulty
-            span.big-details
-              span.small-hash {{ lastDifficulty | totalDifficultyFilter }}
-          div.clearfix
 
       div.clearfix
 
@@ -91,20 +82,6 @@ block content
                   //- span.small-value {{ avgBlockTime | avgTimeFilter }}
                   sparkchart.big-details.spark-blocktimes(data="{{lastBlocksTime.join(',')}}", tooltipsuffix="s")
 
-              div.col-xs-3.stat-holder
-                div.big-info.chart.text-info
-                  //- i.icon-difficulty
-                  span.small-title difficulty
-                  //- span.small-value {{ lastDifficulty | number }}
-                  sparkchart.big-details.spark-difficulty(data="{{difficultyChart.join(',')}}")
-
-              div.col-xs-3.stat-holder.xpull-right
-                div.big-info.chart.xdouble-chart(class="{{ blockPropagationAvg | propagationAvgTimeClass : true }}")
-                  //- i.icon-gas
-                  span.small-title block propagation
-                  //- span.small-value {{ blockPropagationAvg | blockPropagationFilter : '' }}
-                  histogram.big-details.d3-blockpropagation(data="blockPropagationChart")
-
               div.col-xs-3.stat-holder.xpull-right
                 div.big-info.chart.xdouble-chart
                   span.small-title last blocks miners
@@ -135,15 +112,6 @@ block content
                   span.small-title gas spending
                   sparkchart.big-details.spark-gasspending(data="{{gasSpending.join(',')}}")
 
-              div.col-xs-3.stat-holder
-                div.big-info.chart.text-info
-                  //- i.icon-difficulty
-                  span.small-title gas limit
-                  //- span.small-value {{ lastDifficulty | number }}
-                  sparkchart.big-details.spark-difficulty(data="{{lastGasLimit.join(',')}}")
-
-
-
           div.col-xs-4.stat-holder.map-holder
             //- div.col-xs-12
             nodemap#mapHolder(data="map")
@@ -153,7 +121,7 @@ block content
         thead
           tr.text-info
             th.th-nodecheck
-              i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Pin nodes to display first", ng-click="orderTable(['-stats.block.number', 'stats.block.propagation'], false)")
+              i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Pin nodes to display first", ng-click="orderTable(['-stats.block.number'], false)")
             th.th-nodename
               i.icon-node(data-toggle="tooltip", data-placement="top", title="Node name", ng-click="orderTable(['info.name'], false)")
             th.th-nodetype
@@ -165,21 +133,14 @@ block content
             th
               i.icon-network(data-toggle="tooltip", data-placement="top", title="Pending transactions", ng-click="orderTable(['-stats.pending'], false)")
             th
-              i.icon-block(data-toggle="tooltip", data-placement="top", title="Last block", ng-click="orderTable(['-stats.block.number', 'stats.block.propagation'], false)")
+              i.icon-block(data-toggle="tooltip", data-placement="top", title="Last block", ng-click="orderTable(['-stats.block.number'], false)")
             th.th-blockhash &nbsp;
-            th.th-blockhash
-              i.icon-difficulty(data-toggle="tooltip", data-placement="top", title="Total difficulty", ng-click="orderTable(['-stats.block.totalDifficulty'], false)")
             th
               i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Block transactions", ng-click="orderTable(['-stats.block.transactions.length'], false)")
             th
               i.icon-uncle(data-toggle="tooltip", data-placement="top", title="Uncles", ng-click="orderTable(['-stats.block.uncles.length'], false)")
             th.th-blocktime
               i.icon-time(data-toggle="tooltip", data-placement="top", title="Last block time", ng-click="orderTable(['-stats.block.received'], false)")
-            th.th-peerPropagationTime
-              i.icon-gas(data-toggle="tooltip", data-placement="top", title="Propagation time", ng-click="orderTable(['-stats.block.number', 'stats.block.propagation'], false)")
-            th.th-peerPropagationChart
-            th.th-peerPropagationAvg
-              i.icon-gas(data-toggle="tooltip", data-placement="top", title="Average propagation time", ng-click="orderTable(['stats.propagationAvg'], false)")
             th
               i.icon-bulb(data-toggle="tooltip", data-placement="top", title="Up-time", ng-click="orderTable(['-stats.uptime'], false)")
         tbody(ng-cloak)
@@ -203,15 +164,8 @@ block content
                 i.icon-warning-o
             td(class="{{ node.stats | blockClass : bestBlock }}")
               span.small {{node.stats.block.hash | hashFilter}}
-            td(class="{{ node.stats | blockClass : bestBlock }}")
-              span.small {{node.stats.block.totalDifficulty | number}}
             td(style="padding-left: 14px;") {{node.stats.block.transactions.length || 0}}
             td(style="padding-left: 14px;") {{node.stats.block.uncles.length || 0}}
             td(class="{{ node.stats.block.received | timeClass : node.stats.active }}") {{node.stats.block.received | blockTimeFilter }}
             td(class="{{ node.stats | propagationTimeClass : bestBlock }}")
-              div.propagationBox
-              span {{node.stats.block.propagation | blockPropagationFilter}}
-            td.peerPropagationChart(class="{{node.id}}")
-              nodepropagchart(data="{{node.history.join(',')}}")
-            td(class="{{ node.stats | propagationNodeAvgTimeClass : bestBlock }}") {{ node.stats | blockPropagationAvgFilter : bestBlock }}
             td(class="{{ node.stats.uptime | upTimeClass : node.stats.active }}") {{ node.stats.uptime | upTimeFilter }}

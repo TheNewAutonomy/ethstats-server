@@ -103,6 +103,8 @@ angular.module('netStatsApp.filters', [])
 .filter('gasPriceFilter', ['$filter', function(filter) {
 	var numberFilter = filter('number');
 	return function(price) {
+
+		console.log
 		if(typeof price === 'undefined')
 			return "0 wei";
 
