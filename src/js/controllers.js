@@ -118,8 +118,6 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 		console.log('We are scheduling a reconnect operation', opts);
 	})
 	.on('data', function incoming(data) {
-		console.log("DATA: ");
-		console.log(data);
 		$scope.$apply(socketAction(data.action, data.data));
 	});
 
@@ -142,8 +140,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 		// filter data
 		data = xssFilter(data);
 
-		console.log('Action: ', action);
-		console.log('Data: ', data);
+		// console.log('Action: ', action);
+		// console.log('Data: ', data);
 
 		switch(action)
 		{
@@ -265,8 +263,6 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				break;
 
 			case "stats":
-				console.log("STATS: ");
-				console.log(data);
 				var index = findIndex({id: data.id});
 
 				if( !_.isUndefined(data.id) && index >= 0 )
@@ -439,8 +435,6 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 	function addNewNode(data)
 	{
-		console.log("ADD NODE: ");
-		console.log(data);
 		var index = findIndex({id: data.id});
 
 		if( _.isUndefined(data.history) )

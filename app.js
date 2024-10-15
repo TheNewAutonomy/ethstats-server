@@ -53,7 +53,12 @@ var server;
 api = new Primus(server, {
 	transformer: 'websockets',
 	pathname: '/api',
-	parser: 'JSON'
+	parser: 'JSON',
+	log: {
+        info: console.log,
+        warn: console.warn,
+        error: console.error
+    }
 });
 
 api.plugin('emit', require('primus-emit'));
@@ -64,7 +69,12 @@ api.plugin('spark-latency', require('primus-spark-latency'));
 client = new Primus(server, {
 	transformer: 'websockets',
 	pathname: '/primus',
-	parser: 'JSON'
+	parser: 'JSON',
+	log: {
+        info: console.log,
+        warn: console.warn,
+        error: console.error
+    }
 });
 
 client.plugin('emit', require('primus-emit'));
@@ -74,7 +84,12 @@ client.plugin('emit', require('primus-emit'));
 external = new Primus(server, {
 	transformer: 'websockets',
 	pathname: '/external',
-	parser: 'JSON'
+	parser: 'JSON',
+	log: {
+        info: console.log,
+        warn: console.warn,
+        error: console.error
+    }
 });
 
 external.plugin('emit', require('primus-emit'));
@@ -128,6 +143,8 @@ api.on('connection', function (spark)
 
 	spark.on('hello', function (data)
 	{
+		console.log("HIT HELLO");
+		console.log(data);
 		console.info('API', 'CON', 'Hello', data['id']);
 
 		if( _.isUndefined(data.secret) || WS_SECRET.indexOf(data.secret) === -1 || banned.indexOf(spark.address.ip) >= 0 || _.isUndefined(data.id) || reserved.indexOf(data.id) >= 0 )
@@ -146,6 +163,7 @@ api.on('connection', function (spark)
 
 			Nodes.add( data, function (err, info)
 			{
+				console.log("HELLO 2");
 				if(err !== null)
 				{
 					console.error('API', 'CON', 'Connection error:', err);
@@ -157,7 +175,7 @@ api.on('connection', function (spark)
 					spark.emit('ready');
 
 					console.success('API', 'CON', 'Connected: ' + connections, data.id);
-					console.log(data);
+
 					client.write({
 						action: 'add',
 						data: info
@@ -170,8 +188,6 @@ api.on('connection', function (spark)
 
 	spark.on('update', function (data)
 	{
-		console.log("UPDATE: ");
-		console.log(data);
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
 		{
 			Nodes.update(data.id, data.stats, function (err, stats)
@@ -205,8 +221,6 @@ api.on('connection', function (spark)
 
 	spark.on('block', function (data)
 	{
-		console.log("BLOCK: ");
-		console.log(data);
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.block) )
 		{
 			Nodes.addBlock(data.id, data.block, function (err, stats)
@@ -268,8 +282,6 @@ api.on('connection', function (spark)
 
 	spark.on('stats', function (data)
 	{
-		console.log("STATS: ");
-		console.log(data);
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
 		{
 
@@ -287,6 +299,7 @@ api.on('connection', function (spark)
 							action: 'stats',
 							data: stats
 						});
+						console.log("AAAAAAAA");
 						console.log(stats);
 						console.success('API', 'STA', 'Stats from:', data.id);
 					}
