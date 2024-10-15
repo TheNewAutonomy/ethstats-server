@@ -279,7 +279,6 @@ api.on('connection', function (spark)
 
 	spark.on('stats', function (data)
 	{
-		console.log("STATS HIT");
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
 		{
 
@@ -293,12 +292,13 @@ api.on('connection', function (spark)
 				{
 					if(stats !== null)
 					{
+						console.log("stats event");
+						console.log(data);
+
 						client.write({
 							action: 'stats',
 							data: stats
 						});
-						console.log("AAAAAAAA");
-						console.log(stats);
 						console.success('API', 'STA', 'Stats from:', data.id);
 					}
 				}
@@ -405,8 +405,6 @@ api.on('connection', function (spark)
 		});
 	});
 });
-
-
 
 client.on('connection', function (clientSpark)
 {

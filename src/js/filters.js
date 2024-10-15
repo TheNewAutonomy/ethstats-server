@@ -36,6 +36,45 @@ angular.module('netStatsApp.filters', [])
 		return peerClass(peers, active);
 	};
 })
+.filter('miningClass', function() {
+	return function(mining, active) {
+		if(! active)
+			return 'text-gray';
+
+		return (! mining ? 'text-danger' : 'text-success');
+	};
+})
+.filter('miningIconClass', function() {
+	return function(mining) {
+		return (! mining ? 'icon-cancel' : 'icon-check');
+	};
+})
+.filter('hashrateClass', function() {
+	return function(mining, active) {
+		if(! mining || ! active)
+			return 'text-gray';
+
+		return 'text-success';
+	};
+})
+.filter('hashrateFilter', ['$sce', '$filter', function($sce, filter) {
+	return function(hashes, isMining) {
+		if( !isMining )
+			return $sce.trustAsHtml('<i class="icon-cancel"></i>');
+
+		var result = hashes;
+		var units = ['', 'K', 'M', 'G', 'T', 'P', 'E'];
+		var unit = 'K';
+
+		for(var i = 1; result > 1000; i++)
+		{
+			result /= 1000;
+			unit = units[i];
+		}
+
+		return $sce.trustAsHtml('<span class="small">' + filter('number')(result.toFixed(1)) + ' <span class="small-hash">' + unit + 'H/s</span></span>');
+	};
+}])
 .filter('stakingFilter', ['$sce', '$filter', function($sce, filter) {
 	return function(hashes, isMining) {
 		if( !isMining )
