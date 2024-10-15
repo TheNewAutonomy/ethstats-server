@@ -119,17 +119,15 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 	})
 	.on('data', function incoming(data) {
 		$scope.$apply(socketAction(data.action, data.data));
-	})
-	.on('stats', function (data) {
-		console.log('Received stats data from client:', data); // Log received data
-		node.setStats(data.stats, data.history, function(err, stats) {
-			console.log('Updated stats after setStats:', stats);
-		});
 	});
 
 	socket.on('init', function(data)
 	{
 		$scope.$apply(socketAction("init", data.nodes));
+	})
+	.on('stats', (data) => {
+		console.log('Received stats:', data);
+		// Additional processing...
 	});
 
 	socket.on('client-latency', function(data)

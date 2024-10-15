@@ -157,7 +157,7 @@ api.on('connection', function (spark)
 					spark.emit('ready');
 
 					console.success('API', 'CON', 'Connected: ' + connections, data.id);
-
+					console.log(data);
 					client.write({
 						action: 'add',
 						data: info
@@ -264,25 +264,33 @@ api.on('connection', function (spark)
 
 	spark.on('stats', function (data)
 	{
+		console.log("1111111111111");
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
 		{
-
+			console.log("2222222222");
 			Nodes.updateStats(data.id, data.stats, function (err, stats)
 			{
+				console.log("333333333333");
 				if(err !== null)
 				{
+					console.log("44444444444444444");
 					console.error('API', 'STA', 'Stats error:', err);
 				}
 				else
 				{
+					console.log("55555555555555");
 					if(stats !== null)
 					{
+						console.log("666666666666666");
 						client.write({
 							action: 'stats',
 							data: stats
 						});
+						console.log("7777777777777777777");
 						console.log(stats);
+						console.log("888888888888888888");
 						console.success('API', 'STA', 'Stats from:', data.id);
+						console.log("999999999999999");
 					}
 				}
 			});
