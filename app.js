@@ -143,8 +143,6 @@ api.on('connection', function (spark)
 
 	spark.on('hello', function (data)
 	{
-		console.log("HIT HELLO");
-		console.log(data);
 		console.info('API', 'CON', 'Hello', data['id']);
 
 		if( _.isUndefined(data.secret) || WS_SECRET.indexOf(data.secret) === -1 || banned.indexOf(spark.address.ip) >= 0 || _.isUndefined(data.id) || reserved.indexOf(data.id) >= 0 )
@@ -163,7 +161,6 @@ api.on('connection', function (spark)
 
 			Nodes.add( data, function (err, info)
 			{
-				console.log("HELLO 2");
 				if(err !== null)
 				{
 					console.error('API', 'CON', 'Connection error:', err);
@@ -282,6 +279,7 @@ api.on('connection', function (spark)
 
 	spark.on('stats', function (data)
 	{
+		console.log("STATS HIT");
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
 		{
 

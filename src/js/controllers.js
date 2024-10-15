@@ -106,6 +106,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 	socket.on('open', function open() {
 		socket.emit('ready');
+		console.log("LLLLLLLLLLLLLL")
 		console.log('The connection has been opened.');
 	})
 	.on('end', function end() {
@@ -118,6 +119,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 		console.log('We are scheduling a reconnect operation', opts);
 	})
 	.on('data', function incoming(data) {
+		console.log("VVVVVVVVVVVV")
 		$scope.$apply(socketAction(data.action, data.data));
 	});
 
@@ -271,6 +273,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 					if( !_.isUndefined(node) && !_.isUndefined(node.stats) )
 					{
+						console.log("HHHHHHHHHHHHHHHHHHH");
 						console.log(data.stats.active);
 						$scope.nodes[index].stats.active = data.stats.active;
 						$scope.nodes[index].stats.peers = data.stats.peers;
