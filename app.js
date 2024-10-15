@@ -170,6 +170,8 @@ api.on('connection', function (spark)
 
 	spark.on('update', function (data)
 	{
+		console.log("UPDATE: ");
+		console.log(data);
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
 		{
 			Nodes.update(data.id, data.stats, function (err, stats)
@@ -203,6 +205,8 @@ api.on('connection', function (spark)
 
 	spark.on('block', function (data)
 	{
+		console.log("BLOCK: ");
+		console.log(data);
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.block) )
 		{
 			Nodes.addBlock(data.id, data.block, function (err, stats)
@@ -264,33 +268,27 @@ api.on('connection', function (spark)
 
 	spark.on('stats', function (data)
 	{
-		console.log("1111111111111");
+		console.log("STATS: ");
+		console.log(data);
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
 		{
-			console.log("2222222222");
+
 			Nodes.updateStats(data.id, data.stats, function (err, stats)
 			{
-				console.log("333333333333");
 				if(err !== null)
 				{
-					console.log("44444444444444444");
 					console.error('API', 'STA', 'Stats error:', err);
 				}
 				else
 				{
-					console.log("55555555555555");
 					if(stats !== null)
 					{
-						console.log("666666666666666");
 						client.write({
 							action: 'stats',
 							data: stats
 						});
-						console.log("7777777777777777777");
 						console.log(stats);
-						console.log("888888888888888888");
 						console.success('API', 'STA', 'Stats from:', data.id);
-						console.log("999999999999999");
 					}
 				}
 			});
