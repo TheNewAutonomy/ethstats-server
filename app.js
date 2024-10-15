@@ -292,9 +292,6 @@ api.on('connection', function (spark)
 				{
 					if(stats !== null)
 					{
-						console.log("stats event");
-						console.log(data);
-
 						client.write({
 							action: 'stats',
 							data: stats

@@ -138,9 +138,6 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 		// filter data
 		data = xssFilter(data);
 
-		console.log('Action: ', action);
-		console.log('Data: ', data);
-
 		switch(action)
 		{
 			case "init":
@@ -269,8 +266,6 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 					if( !_.isUndefined(node) && !_.isUndefined(node.stats) )
 					{
-						console.log("stats action: ");
-						console.log(data.stats.active);
 						$scope.nodes[index].stats.active = data.stats.active;
 						$scope.nodes[index].stats.peers = data.stats.peers;
 						$scope.nodes[index].stats.gasPrice = data.stats.gasPrice;
