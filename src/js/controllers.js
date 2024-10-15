@@ -106,7 +106,6 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 	socket.on('open', function open() {
 		socket.emit('ready');
-		console.log("LLLLLLLLLLLLLL")
 		console.log('The connection has been opened.');
 	})
 	.on('end', function end() {
@@ -119,17 +118,12 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 		console.log('We are scheduling a reconnect operation', opts);
 	})
 	.on('data', function incoming(data) {
-		console.log("VVVVVVVVVVVV")
 		$scope.$apply(socketAction(data.action, data.data));
 	});
 
 	socket.on('init', function(data)
 	{
 		$scope.$apply(socketAction("init", data.nodes));
-	})
-	.on('stats', (data) => {
-		console.log('Received stats:', data);
-		// Additional processing...
 	});
 
 	socket.on('client-latency', function(data)
@@ -151,6 +145,10 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				$scope.nodes = data;
 
 				_.forEach($scope.nodes, function (node, index) {
+
+					// Init hashrate
+					if( _.isUndefined(node.stats.hashrate) )
+						node.stats.hashrate = 0;
 
 					// Init latency
 					latencyFilter(node);
@@ -193,6 +191,9 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				{
 					if( !_.isUndefined($scope.nodes[index].stats.latency) )
 						data.stats.latency = $scope.nodes[index].stats.latency;
+
+					if( _.isUndefined(data.stats.hashrate) )
+						data.stats.hashrate = 0;
 
 					if( $scope.nodes[index].stats.block.number < data.stats.block.number )
 					{
@@ -273,9 +274,9 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 					if( !_.isUndefined(node) && !_.isUndefined(node.stats) )
 					{
-						console.log("HHHHHHHHHHHHHHHHHHH");
-						console.log(data.stats.active);
 						$scope.nodes[index].stats.active = data.stats.active;
+						$scope.nodes[index].stats.mining = data.stats.mining;
+						$scope.nodes[index].stats.hashrate = data.stats.hashrate;
 						$scope.nodes[index].stats.peers = data.stats.peers;
 						$scope.nodes[index].stats.gasPrice = data.stats.gasPrice;
 						$scope.nodes[index].stats.uptime = data.stats.uptime;
@@ -448,6 +449,11 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 		if( index < 0 )
 		{
+			if( !_.isUndefined(data.stats) && _.isUndefined(data.stats.hashrate) )
+			{
+				data.stats.hashrate = 0;
+			}
+
 			data.pinned = false;
 
 			$scope.nodes.push(data);
