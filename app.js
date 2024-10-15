@@ -279,32 +279,26 @@ api.on('connection', function (spark)
 
 	spark.on('stats', function (data)
 	{
-		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
-		{
+		console.info('API', 'STA', 'stats', data['id']);
 
-			Nodes.updateStats(data.id, data.stats, function (err, stats)
-			{
-				if(err !== null)
-				{
-					console.error('API', 'STA', 'Stats error:', err);
-				}
-				else
-				{
-					if(stats !== null)
-					{
-						client.write({
-							action: 'stats',
-							data: stats
-						});
-						console.success('API', 'STA', 'Stats from:', data.id);
-					}
-				}
-			});
-		}
-		else
+		Nodes.updateStats(data.id, data.stats, function (err, stats)
 		{
-			console.error('API', 'STA', 'Stats error:', data);
-		}
+			if(err !== null)
+			{
+				console.error('API', 'STA', 'Stats error:', err);
+			}
+			else
+			{
+				if(stats !== null)
+				{
+					client.write({
+						action: 'stats',
+						data: stats
+					});
+					console.success('API', 'STA', 'Stats from:', data.id);
+				}
+			}
+		});
 	});
 
 
